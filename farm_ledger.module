@@ -5,6 +5,8 @@
  * farmOS ledger module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_theme().
  */
@@ -15,4 +17,19 @@ function farm_ledger_theme() {
       'base hook' => 'quantity',
     ],
   ];
+}
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function farm_ledger_inline_entity_form_entity_form_alter(array &$entity_form, FormStateInterface &$form_state) {
+
+  // Bail if not a price quantity inline entity form.
+  if ($entity_form['#entity_type'] !== 'quantity' || $entity_form['#bundle'] !== 'price') {
+    return;
+  }
+
+  // Hide the measure field.
+  $entity_form['measure']['#access'] = FALSE;
+
 }
