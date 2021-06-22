@@ -24,12 +24,11 @@ class Price extends FarmQuantityType {
 
     // Add unit_quantity and unit_price fraction fields.
     $field_info = [
-      'unit_quantity' => [
+      'unit_price' => [
         'type' => 'fraction',
-        'label' => $this->t('Unit quantity'),
-        'description' => $this->t('How many were purchased?'),
+        'label' => $this->t('Unit price'),
         'weight' => [
-          'form' => 3,
+          'form' => 6,
         ],
         'view_display_options' => [
           'label' => 'hidden',
@@ -42,11 +41,12 @@ class Price extends FarmQuantityType {
           ],
         ],
       ],
-      'unit_price' => [
+      'unit_quantity' => [
         'type' => 'fraction',
-        'label' => $this->t('Unit price'),
+        'label' => $this->t('Unit quantity'),
+        'description' => $this->t('How many were purchased?'),
         'weight' => [
-          'form' => 3,
+          'form' => 7,
         ],
         'view_display_options' => [
           'label' => 'hidden',
