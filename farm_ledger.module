@@ -23,6 +23,13 @@ function farm_ledger_inline_entity_form_entity_form_alter(array &$entity_form, F
   // Hide the value field. It is auto-populated from the unit_price and
   // unit_quantity fields when the quantity is saved.
   $entity_form['value']['#access'] = FALSE;
+
+  // Hide inventory fields from the price quantity.
+  foreach (['inventory_adjustment', 'inventory_asset'] as $inventory_field) {
+    if (!empty($entity_form[$inventory_field])) {
+      $entity_form[$inventory_field]['#access'] = FALSE;
+    }
+  }
 }
 
 /**
