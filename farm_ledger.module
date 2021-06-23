@@ -8,18 +8,6 @@
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Implements hook_theme().
- */
-function farm_ledger_theme() {
-  return [
-    'quantity__price' => [
-      'render element' => 'elements',
-      'base hook' => 'quantity',
-    ],
-  ];
-}
-
-/**
  * Implements hook_inline_entity_form_entity_form_alter().
  */
 function farm_ledger_inline_entity_form_entity_form_alter(array &$entity_form, FormStateInterface &$form_state) {
@@ -35,4 +23,60 @@ function farm_ledger_inline_entity_form_entity_form_alter(array &$entity_form, F
   // Hide the value field. It is auto-populated from the unit_price and
   // unit_quantity fields when the quantity is saved.
   $entity_form['value']['#access'] = FALSE;
+}
+
+/**
+ * Prepares price quantities for display.
+ *
+ * Default template: quantity.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the quantity information and
+ *     any fields attached to the quantity. Properties used:
+ *     - #quantity: A \Drupal\quantity\Entity\Quantity object. Quantity entity.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function farm_ledger_preprocess_quantity(array &$variables) {
+
+  /** @var \Drupal\quantity\Entity\QuantityInterface $quantity */
+  $quantity = $variables['elements']['#quantity'];
+
+  // Only alter price quantities.
+  if ($quantity->bundle() === 'price') {
+
+    // Always hide the measure and price fields.
+    unset($variables['content']['measure']);
+    unset($variables['content']['unit_price']);
+    unset($variables['content']['unit_quantity']);
+
+    // Get the units.
+    $units = 'N/A';
+    if (!empty($variables['content']['units'])) {
+      $units = $quantity->get('units')->entity->label();
+    }
+    // Ensure the total value uses the same units.
+    $variables['content']['units'] = ['#markup' => $units];
+
+    // Get the unit price.
+    $unit_price = 'N/A';
+    if (!$quantity->get('unit_price')->isEmpty()) {
+      $unit_price = $quantity->get('unit_price')->fraction->toDecimal(0, TRUE);
+    }
+
+    // Get the unit quantity.
+    $unit_quantity = 'N/A';
+    if (!$quantity->get('unit_quantity')->isEmpty()) {
+      $unit_quantity = $quantity->get('unit_quantity')->fraction->toDecimal(0, TRUE);
+    }
+
+    // Build the quantity price info.
+    $price = [
+      '#prefix' => '<span class="price">',
+      '#suffix' => '</span>',
+      '#markup' => '(' . t('Unit price: @unit_price @units, Unit quantity: @unit_quantity', ['@unit_price' => $unit_price, '@units' => $units, '@unit_quantity' => $unit_quantity]) . ')',
+      '#weight' => 5,
+    ];
+    $variables['content']['price'] = $price;
+  }
 }
