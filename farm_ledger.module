@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * farmOS ledger module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function farm_ledger_theme() {
+  return [
+    'quantity__price' => [
+      'render element' => 'elements',
+      'base hook' => 'quantity',
+    ],
+  ];
+}
