@@ -16,6 +16,6 @@
       }
   ],
   "require": {
-    "drupal/fraction": "2.x-dev"
+    "drupal/fraction": "^2.0"
   }
 }
