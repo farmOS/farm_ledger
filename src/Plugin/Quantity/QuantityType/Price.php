@@ -41,6 +41,23 @@ class Price extends FarmQuantityType {
           ],
         ],
       ],
+      'total_price' => [
+        'type' => 'fraction',
+        'label' => $this->t('Total price'),
+        'weight' => [
+          'form' => 7,
+        ],
+        'view_display_options' => [
+          'label' => 'hidden',
+          'type' => 'fraction_decimal',
+          'settings' => [
+            'precision' => 0,
+            'auto_precision' => TRUE,
+            'separator' => '/',
+            'prefix_suffix' => FALSE,
+          ],
+        ],
+      ],
     ];
     foreach ($field_info as $name => $info) {
       $fields[$name] = $this->farmFieldFactory->bundleFieldDefinition($info);
