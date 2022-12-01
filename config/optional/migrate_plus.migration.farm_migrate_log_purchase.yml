@@ -64,15 +64,14 @@ process:
       plugin: create_quantity
       default_values:
         type: 'price'
-        measure: 'value'
       values:
         uid: '@uid'
         created: '@created'
         changed: '@changed'
-        value: field_farm_total_price
+        value: field_farm_quantity_value
         units: '@_units'
-        unit_quantity: field_farm_quantity_value
         unit_price: field_farm_unit_price
+        total_price: field_farm_total_price
   # Purchase specific fields.
   invoice_number:
     plugin: get
