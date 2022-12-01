@@ -34,16 +34,16 @@ function farm_ledger_views_data_alter(array &$data) {
     ],
   ];
 
-  // Create unit quantity field, filter, and sort using fraction decimal
+  // Create total price field, filter, and sort using fraction decimal
   // handlers.
   $fraction_fields = [
-    'numerator' => 'unit_quantity_numerator',
-    'denominator' => 'unit_quantity_denominator',
+    'numerator' => 'total_price_numerator',
+    'denominator' => 'total_price_denominator',
   ];
-  $data['quantity__unit_quantity']['unit_quantity_value'] = [
-    'title' => t('Unit quantity'),
-    'help' => t('Value of the unit quantity, in decimal format.'),
-    'real field' => 'unit_quantity_numerator',
+  $data['quantity__total_price']['total_price_value'] = [
+    'title' => t('Total price'),
+    'help' => t('Value of the total price, in decimal format.'),
+    'real field' => 'total_price_numerator',
     'field' => [
       'id' => 'fraction',
       'additional fields' => $fraction_fields,
