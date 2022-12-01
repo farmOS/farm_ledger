@@ -34,7 +34,7 @@ process:
     migration: farm_migrate_taxonomy_unit
     source: field_farm_quantity_units
   # Create a price quantity.
-  quantity/0:
+  quantity:
     # First collect all of the price data.
     -
       plugin: get
@@ -53,6 +53,12 @@ process:
     -
       plugin: skip_on_empty
       method: process
+    # Use static_map to set the value to [[]], so we can let create_quantity
+    # create a single quantity from the known values (defined below).
+    -
+      plugin: static_map
+      map: {  }
+      default_value: [[]]
     # Create a single price quantity.
     -
       plugin: create_quantity
