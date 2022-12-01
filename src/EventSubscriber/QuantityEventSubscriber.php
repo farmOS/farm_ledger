@@ -37,19 +37,19 @@ class QuantityEventSubscriber implements EventSubscriberInterface {
 
     /** @var \Drupal\fraction\Plugin\Field\FieldType\FractionItem $unit_price_field */
     $unit_price_field = $event->quantity->get('unit_price');
-    /** @var \Drupal\fraction\Plugin\Field\FieldType\FractionItem $unit_quantity_field */
-    $unit_quantity_field = $event->quantity->get('unit_quantity');
-    if (!$unit_price_field->isEmpty() && !$unit_quantity_field->isEmpty()) {
+    /** @var \Drupal\fraction\Plugin\Field\FieldType\FractionItem $quantity_value_field */
+    $quantity_value_field = $event->quantity->get('value');
+    if (!$unit_price_field->isEmpty() && !$quantity_value_field->isEmpty()) {
 
       // Calculate the total price.
       /** @var \Drupal\fraction\Fraction $unit_price */
       $unit_price = $unit_price_field->fraction;
       /** @var \Drupal\fraction\Fraction $unit_quantity */
-      $unit_quantity = $unit_quantity_field->fraction;
+      $unit_quantity = $quantity_value_field->fraction;
       $total_price = $unit_price->multiply($unit_quantity);
 
-      // Update the quantity value to be the computed total price.
-      $event->quantity->set('value', ['numerator' => $total_price->getNumerator(), 'denominator' => $total_price->getDenominator()]);
+      // Save the computed total price.
+      $event->quantity->set('total_price', ['numerator' => $total_price->getNumerator(), 'denominator' => $total_price->getDenominator()]);
     }
   }
 
