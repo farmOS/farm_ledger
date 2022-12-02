@@ -27,35 +27,19 @@ class Price extends FarmQuantityType {
       'unit_price' => [
         'type' => 'fraction',
         'label' => $this->t('Unit price'),
+        'description' => $this->t('The price per unit. If left blank, this will be automatically calculated.'),
         'weight' => [
-          'form' => 6,
-        ],
-        'view_display_options' => [
-          'label' => 'hidden',
-          'type' => 'fraction_decimal',
-          'settings' => [
-            'precision' => 0,
-            'auto_precision' => TRUE,
-            'separator' => '/',
-            'prefix_suffix' => FALSE,
-          ],
+          'form' => 11,
+          'view' => 11,
         ],
       ],
       'total_price' => [
         'type' => 'fraction',
         'label' => $this->t('Total price'),
+        'description' => $this->t('The total price. If left blank, this will be automatically calculated.'),
         'weight' => [
-          'form' => 7,
-        ],
-        'view_display_options' => [
-          'label' => 'hidden',
-          'type' => 'fraction_decimal',
-          'settings' => [
-            'precision' => 0,
-            'auto_precision' => TRUE,
-            'separator' => '/',
-            'prefix_suffix' => FALSE,
-          ],
+          'form' => 12,
+          'view' => 12,
         ],
       ],
     ];
