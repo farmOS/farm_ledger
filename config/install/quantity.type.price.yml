@@ -6,6 +6,5 @@ dependencies:
       - farm_ledger
 id: price
 label: Price
-default_measure: value
 description: 'Price quantity type.'
 new_revision: true
