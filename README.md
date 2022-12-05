@@ -44,6 +44,7 @@ information.
 
 Current maintainers:
 * Michael Stenta (m.stenta) - https://github.com/mstenta
+* Paul Weidner (paul121) - https://github.com/paul121
 
 This project has been sponsored by:
 * [Farmier](http://farmier.com)
