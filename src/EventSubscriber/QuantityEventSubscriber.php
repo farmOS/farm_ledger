@@ -23,7 +23,7 @@ class QuantityEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Auto-populate the value field on price quantities.
+   * Autopopulate the quantity/unit price/total price on price quantities.
    *
    * @param \Drupal\quantity\Event\QuantityEvent $event
    *   Quantity event.
@@ -35,21 +35,45 @@ class QuantityEventSubscriber implements EventSubscriberInterface {
       return;
     }
 
+    // Get the quantity value, unit price, and total price fields.
+    /** @var \Drupal\fraction\Plugin\Field\FieldType\FractionItem $quantity_value_field */
+    $quantity_value_field = $event->quantity->get('value');
     /** @var \Drupal\fraction\Plugin\Field\FieldType\FractionItem $unit_price_field */
     $unit_price_field = $event->quantity->get('unit_price');
-    /** @var \Drupal\fraction\Plugin\Field\FieldType\FractionItem $unit_quantity_field */
-    $unit_quantity_field = $event->quantity->get('unit_quantity');
-    if (!$unit_price_field->isEmpty() && !$unit_quantity_field->isEmpty()) {
+    /** @var \Drupal\fraction\Plugin\Field\FieldType\FractionItem $total_price_field */
+    $total_price_field = $event->quantity->get('total_price');
 
-      // Calculate the total price.
+    // If we have a quantity value and unit price, but no total price, calculate
+    // the total price.
+    if (!$quantity_value_field->isEmpty() && !$unit_price_field->isEmpty() && $total_price_field->isEmpty()) {
+      /** @var \Drupal\fraction\Fraction $quantity_value */
+      $quantity_value = $quantity_value_field->fraction;
       /** @var \Drupal\fraction\Fraction $unit_price */
       $unit_price = $unit_price_field->fraction;
-      /** @var \Drupal\fraction\Fraction $unit_quantity */
-      $unit_quantity = $unit_quantity_field->fraction;
-      $total_price = $unit_price->multiply($unit_quantity);
+      $total_price = $unit_price->multiply($quantity_value);
+      $event->quantity->set('total_price', ['numerator' => $total_price->getNumerator(), 'denominator' => $total_price->getDenominator()]);
+    }
 
-      // Update the quantity value to be the computed total price.
-      $event->quantity->set('value', ['numerator' => $total_price->getNumerator(), 'denominator' => $total_price->getDenominator()]);
+    // Or, if we have a quantity value and total price, but no unit price,
+    // calculate the unit price.
+    elseif (!$quantity_value_field->isEmpty() && !$total_price_field->isEmpty() && $unit_price_field->isEmpty()) {
+      /** @var \Drupal\fraction\Fraction $quantity_value */
+      $quantity_value = $quantity_value_field->fraction;
+      /** @var \Drupal\fraction\Fraction $total_price */
+      $total_price = $total_price_field->fraction;
+      $unit_price = $total_price->divide($quantity_value);
+      $event->quantity->set('unit_price', ['numerator' => $unit_price->getNumerator(), 'denominator' => $unit_price->getDenominator()]);
+    }
+
+    // Or, if we have a unit price and total price, but no quantity value,
+    // calculate the quantity value.
+    elseif (!$unit_price_field->isEmpty() && !$total_price_field->isEmpty() && $unit_price_field->isEmpty()) {
+      /** @var \Drupal\fraction\Fraction $unit_price */
+      $unit_price = $unit_price_field->fraction;
+      /** @var \Drupal\fraction\Fraction $total_price */
+      $total_price = $total_price_field->fraction;
+      $quantity_value = $total_price->divide($unit_price);
+      $event->quantity->set('value', ['numerator' => $quantity_value->getNumerator(), 'denominator' => $quantity_value->getDenominator()]);
     }
   }
 
