@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * farmOS ledger module.
+ */
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function farm_ledger_entity_type_alter(array &$entity_types) {
+  $entity_types['quantity']->addConstraint('TotalPrice');
+}
