@@ -63,8 +63,13 @@ function farm_ledger_post_update_migrate_price_quantity_total_price(&$sandbox) {
     $database->query("UPDATE {quantity_revision} qr SET value__numerator = (SELECT unit_quantity_numerator FROM {quantity_revision__unit_quantity} uq WHERE uq.entity_id = qr.id AND uq.revision_id = qr.revision_id), value__denominator = (SELECT unit_quantity_denominator FROM {quantity_revision__unit_quantity} uq WHERE uq.entity_id = qr.id AND uq.revision_id = qr.revision_id) WHERE qr.id = :id", [':id' => $id]);
   }
 
-  // Update progress.
-  $sandbox['#finished'] = $sandbox['current_quantity'] / count($sandbox['price_quantity_ids']);
+  // Update progress. If there are no price quantities, we're finished.
+  if (!empty($sandbox['price_quantity_ids'])) {
+    $sandbox['#finished'] = $sandbox['current_quantity'] / count($sandbox['price_quantity_ids']);
+  }
+  else {
+    $sandbox['#finished'] = 1;
+  }
 
   // When we are finished, delete the unit_quantity field.
   if ($sandbox['#finished'] == 1) {
