@@ -67,7 +67,7 @@ class QuantityEventSubscriber implements EventSubscriberInterface {
 
     // Or, if we have a unit price and total price, but no quantity value,
     // calculate the quantity value.
-    elseif (!$unit_price_field->isEmpty() && !$total_price_field->isEmpty() && $quantity_value->isEmpty()) {
+    elseif (!$unit_price_field->isEmpty() && !$total_price_field->isEmpty() && $quantity_value_field->isEmpty()) {
       /** @var \Drupal\fraction\Fraction $unit_price */
       $unit_price = $unit_price_field->fraction;
       /** @var \Drupal\fraction\Fraction $total_price */
