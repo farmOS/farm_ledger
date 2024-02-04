@@ -5,9 +5,6 @@
  * Post update hooks for the farm_ledger module.
  */
 
-use Drupal\Core\Utility\UpdateException;
-use Drupal\taxonomy\Entity\Term;
-
 /**
  * Update price quantity data structure and migrate data.
  */
