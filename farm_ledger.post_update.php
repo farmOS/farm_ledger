@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Utility\UpdateException;
-use Drupal\migrate_plus\Entity\Migration;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -86,11 +85,11 @@ function farm_ledger_post_update_migrate_price_quantity_total_price(&$sandbox) {
  * Uninstall v1 migration configs.
  */
 function farm_ledger_post_update_uninstall_v1_migrations(&$sandbox) {
-  $config = Migration::load('farm_migrate_log_purchase');
+  $config = \Drupal::configFactory()->getEditable('migrate_plus.migration.farm_migrate_log_sale');
   if (!empty($config)) {
     $config->delete();
   }
-  $config = Migration::load('farm_migrate_log_sale');
+  $config = \Drupal::configFactory()->getEditable('migrate_plus.migration.farm_migrate_log_purchase');
   if (!empty($config)) {
     $config->delete();
   }
