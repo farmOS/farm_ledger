@@ -2,16 +2,17 @@
 
 namespace Drupal\farm_ledger\Plugin\Log\LogType;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\farm_entity\Attribute\LogType;
 use Drupal\farm_entity\Plugin\Log\LogType\FarmLogType;
 
 /**
  * Provides the sale log type.
- *
- * @LogType(
- *   id = "sale",
- *   label = @Translation("Sale"),
- * )
  */
+#[LogType(
+  id: 'sale',
+  label: new TranslatableMarkup('Sale'),
+)]
 class Sale extends FarmLogType {
 
   /**

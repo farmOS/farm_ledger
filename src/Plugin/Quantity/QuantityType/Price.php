@@ -2,16 +2,17 @@
 
 namespace Drupal\farm_ledger\Plugin\Quantity\QuantityType;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\farm_entity\Attribute\QuantityType;
 use Drupal\farm_entity\Plugin\Quantity\QuantityType\FarmQuantityType;
 
 /**
  * Provides the price quantity type.
- *
- * @QuantityType(
- *   id = "price",
- *   label = @Translation("Price"),
- * )
  */
+#[QuantityType(
+  id: 'price',
+  label: new TranslatableMarkup('Price'),
+)]
 class Price extends FarmQuantityType {
 
   /**
